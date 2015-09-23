@@ -1,0 +1,17 @@
+{
+  "name": "rxdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-loader": "^5.3.2",
+    "rx": "^3.1.2",
+    "webpack": "^1.12.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
