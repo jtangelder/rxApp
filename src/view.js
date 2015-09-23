@@ -5,7 +5,7 @@ export default class extends React.Component {
   static propTypes = {
     items: React.PropTypes.array,
     selectedItemId: React.PropTypes.number,
-    onItemSelect: React.PropTypes.func
+    onItemSelect: React.PropTypes.func.isRequired
   };
 
   onItemSelect(itemId, ev) {
@@ -44,10 +44,6 @@ export default class extends React.Component {
   }
 
   renderDetails() {
-    if (!this.props.selectedItemId) {
-      return <p>Pick an item.</p>;
-    }
-
     const item = this.props.items.find(item => item.id === this.props.selectedItemId);
     return (
       <article>
@@ -72,7 +68,7 @@ export default class extends React.Component {
   render() {
     if (!this.props.items) {
       return (
-        <div className="container-fluid">
+        <div className="container-fluid text-center">
           <p>Loading...</p>
         </div>
       );

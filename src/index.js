@@ -6,17 +6,21 @@ import { getTopStories, getItemById } from './api';
 
 const eventEmitter = new EventEmitter();
 
-const selectedItemIdStream = Rx.Observable.fromEvent(eventEmitter, 'select', itemId => itemId)
+const selectItemStream = Rx.Observable.fromEvent(eventEmitter, 'select', itemId => itemId)
     .startWith(null);
 
 const itemsStream = Rx.Observable.fromPromise(getTopStories())
     .map(itemIds => itemIds.filter((item, index)=> index < 15))
     .flatMap(itemIds => Promise.all(itemIds.map(getItemById)))
-    .map(items => items.filter(item => !item.deleted));
+    .map(items => items.filter(item => !item.deleted))
+    .startWith(null);
 
-const listStateStream = Rx.Observable.combineLatest(itemsStream, selectedItemIdStream);
+const stateStream = Rx.Observable.combineLatest(itemsStream, selectItemStream);
+stateStream.subscribe(([items, selectedItemId])=> {
+  if (selectedItemId === null && items && items.length) {
+    selectedItemId = items[0].id;
+  }
 
-listStateStream.subscribe(([items, selectedItemId])=> {
   React.render(
       <RootView
           items={items}
