@@ -1,22 +1,30 @@
-import { Observable } from 'rx';
+import { EventEmitter } from 'events';
+import Rx from 'rx';
+import React from 'react';
+import RootView from './view';
+import { getTopStories, getItemById } from './api';
 
-const btns = document.querySelectorAll('#btn1, #btn2');
-const area = document.querySelector('#area');
+const eventEmitter = new EventEmitter();
 
-const clickEventValueStream = Observable.fromEvent(btns, 'click')
-  .map(ev => ev.target.value);
+function onSelectItem(itemId) {
+  eventEmitter.emit('select', itemId);
+}
 
-const changeColorStream = Observable.just(null)
-  .merge(clickEventValueStream);
+const selectedItemIdStream = Rx.Observable.fromEvent(eventEmitter, 'select', itemId => itemId)
+    .startWith(null);
 
-const colorStream = changeColorStream
-  .map((color)=> {
-    if (color === null) {
-        return '#eee';
-    }
-    return color;
-  });
+const itemsStream = Rx.Observable.fromPromise(getTopStories())
+    .map(itemIds => itemIds.filter((item, index)=> index < 2))
+    .flatMap(itemIds => Promise.all(itemIds.map(getItemById)));
 
-colorStream.subscribe((color)=> {
-    area.style.background = color;
+const listStateStream = Rx.Observable.combineLatest(itemsStream, selectedItemIdStream);
+
+listStateStream.subscribe(([items, selectedItemId])=> {
+  React.render(
+      <RootView
+          items={items}
+          selectedItemId={selectedItemId}
+          onItemSelect={onSelectItem}
+      />,
+      document.querySelector('#app'));
 });

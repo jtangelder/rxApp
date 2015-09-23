@@ -2,17 +2,29 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>webpack ES6 demo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FRP Hackernews</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <style>
+        html,
+        body,
+        #app,
+        #app > .container-fluid,
+        #app > .container-fluid > .row,
+        #app > .container-fluid > .row > div {
+            height: 100%;
+        }
+
+        #app > .container-fluid > .row > div {
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-
-    <div id="area">area</div>
-
-    <button id="btn1" value="red">Red</button>
-    <button id="btn2" value="blue">Blue</button>
-
-</div>
-<script src="bundle.js"></script>
+    <div id="app"></div>
+    <script src="bundle.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ module.exports = {
         loaders: [
             {
                 test: path.join(__dirname, 'src'),
-                loader: 'babel-loader'
+                loader: 'babel-loader?stage=0'
             }
         ]
     }
