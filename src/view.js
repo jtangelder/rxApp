@@ -18,12 +18,15 @@ export default class extends React.Component {
       'list-group-item': true,
       'active': item.id === this.props.selectedItemId
     });
-    console.log(item);
+
+    const badge = (item.type !== 'story') ? <span className="badge">{item.type}</span> : null;
     return (
-      <a key={item.id} href="#" className={className}
+      <a key={item.id}
+         href={`https://news.ycombinator.com/item?id=${item.id}`}
+         className={className}
          onClick={this.onItemSelect.bind(this, item.id)}
       >
-        <span className="badge">{item.kids.length}</span>
+        {badge}
         {item.title}
       </a>
     );
@@ -50,8 +53,18 @@ export default class extends React.Component {
       <article>
         <h1>#{item.id}: {item.title}</h1>
         <p><em>Posted at {new Date(item.time * 1000).toLocaleString()} by {item.by}.</em></p>
-        {item.url && <p><a href={item.url}>{item.url}</a></p>}
+        <p>
+          This post has <strong>{item.score}</strong> points and
+          contains <strong>{item.descendants}</strong> comments.
+        </p>
+        {item.url && <h4><a href={item.url}>{item.url}</a></h4>}
         {item.text && <div>{item.text}</div>}
+        <hr />
+        <p>
+          <a className="btn btn-primary btn-small" href={`https://news.ycombinator.com/item?id=${item.id}`}>
+            Open on news.ycombinator.com.
+          </a>
+        </p>
       </article>
     );
   }

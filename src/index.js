@@ -14,7 +14,7 @@ const selectedItemIdStream = Rx.Observable.fromEvent(eventEmitter, 'select', ite
     .startWith(null);
 
 const itemsStream = Rx.Observable.fromPromise(getTopStories())
-    .map(itemIds => itemIds.filter((item, index)=> index < 2))
+    .map(itemIds => itemIds.filter((item, index)=> index < 10))
     .flatMap(itemIds => Promise.all(itemIds.map(getItemById)));
 
 const listStateStream = Rx.Observable.combineLatest(itemsStream, selectedItemIdStream);
